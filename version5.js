@@ -37,6 +37,29 @@ var todoList = {
     toggleCompleted: function(position){
         this.todos[position].completed = !this.todos[position].completed;
         this.displayTodos();
+    },
+    
+    toggleAll: function(){
+        var everythingTrue = true;
+        for(var i = 0; i< this.todos.length; i++){
+            if(this.todos[i].completed==false){
+                everythingTrue = false;
+                break;
+            }
+        }
+        
+        if(everythingTrue){
+            for(var i = 0; i< this.todos.length; i++){
+                this.todos[i].completed = false;
+            }
+        }else{
+            for(var i = 0; i< this.todos.length; i++){
+                this.todos[i].completed = true;
+            }
+        }
+        
+        this.displayTodos();
+        
     }
 }
 
@@ -44,3 +67,5 @@ todoList.displayTodos();
 todoList.addTodo('first item');
 todoList.addTodo('second item');
 todoList.toggleCompleted(0);
+todoList.toggleAll();
+todoList.toggleAll();
