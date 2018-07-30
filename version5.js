@@ -61,11 +61,22 @@ var todoList = {
         this.displayTodos();
         
     }
-}
+};
 
-todoList.displayTodos();
-todoList.addTodo('first item');
-todoList.addTodo('second item');
-todoList.toggleCompleted(0);
-todoList.toggleAll();
-todoList.toggleAll();
+// todoList.displayTodos();
+// todoList.addTodo('first item');
+// todoList.addTodo('second item');
+// todoList.toggleCompleted(0);
+// todoList.toggleAll();
+// todoList.toggleAll();
+
+var displayTodosButton = document.getElementById('displayTodosButton');
+var toggleAllButton = document.getElementById('toggleAllButton');
+
+displayTodosButton.addEventListener('click', function(){
+    todoList.displayTodos();
+});
+
+toggleAllButton.addEventListener('click', function(){
+    todoList.toggleAll();
+});
