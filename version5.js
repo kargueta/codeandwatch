@@ -106,10 +106,15 @@ var handlers = {
         view.displayTodos();
     },
     
-    deleteTodo: function(){
-        var deleteTodoPositionInput = document.getElementById('deleteTodoPositionInput');
-        todoList.deleteTodo(deleteTodoPositionInput.valueAsNumber);
-        deleteTodoPositionInput.value = '';
+    deleteTodo: function(position){
+        //By modifying the program to provide functionality with a button delete method
+        //we no longer need to use a number input to carry this out which is why we're
+        //delegating this functionality below to separate code
+        
+        // var deleteTodoPositionInput = document.getElementById('deleteTodoPositionInput');
+        // todoList.deleteTodo(deleteTodoPositionInput.valueAsNumber);
+        todoList.deleteTodo(position);
+        // deleteTodoPositionInput.value = '';
         view.displayTodos();
     },
     
@@ -128,25 +133,78 @@ var view = {
         //innerHTML property of an element gives us access the content between the opening and closing tag
         todosUl.innerHTML = '';
         
-        for(var i = 0; i<todoList.todos.length; i++){
-        //the createmethod injects an html element into the DOM    
-        var todosLi = document.createElement('li');
+        // for(var i = 0; i<todoList.todos.length; i++){
+        // //the createmethod injects an html element into the DOM    
+        //     var todosLi = document.createElement('li');
+            
+        //     var todo = todoList.todos[i];
+        //     var todoTextWithCompletion = '';
+        //     if(todo.completed === true){
+        //         todoTextWithCompletion = "(x) "+todo.todoText;
+        //     }else{
+        //         todoTextWithCompletion = "( ) "+todo.todoText;
+        //     }
+            
+        //     //This line was added to allow for the reference to a specific delete button
+        //     todosLi.id = i;
+            
+            
+        //     // the textContent gives us acces to the text an html holds
+        //     todosLi.textContent = todoTextWithCompletion;
+        //     todosLi.appendChild(this.createDeleteButton());
+        //     //appendChild is how we can add elements into other elements using javascript
+        //     todosUl.appendChild(todosLi);
+        // }
         
-        var todo = todoList.todos[i];
-        var todoTextWithCompletion = '';
-        if(todo.completed === true){
-            todoTextWithCompletion = "(x) "+todo.todoText;
-        }else{
-            todoTextWithCompletion = "( ) "+todo.todoText;
-        }
+        todoList.todos.forEach(function(todo,position){
+            var todosLi = document.createElement('li');
+            
+            var todoTextWithCompletion = '';
+            if(todo.completed === true){
+                todoTextWithCompletion = "(x) "+todo.todoText;
+            }else{
+                todoTextWithCompletion = "( ) "+todo.todoText;
+            }
+            
+            //This line was added to allow for the reference to a specific delete button
+            todosLi.id = position;
+            
+            
+            // the textContent gives us acces to the text an html holds
+            todosLi.textContent = todoTextWithCompletion;
+            todosLi.appendChild(this.createDeleteButton());
+            //appendChild is how we can add elements into other elements using javascript
+            todosUl.appendChild(todosLi);
+        },this);
         
         
+    },
+    
+    createDeleteButton: function(){
+        //create a delete button on the DOM
+        var deleteButton = document.createElement('button');
+        //text on button says Delete
+        deleteButton.textContent = 'Delete';
+        //assign all buttons to the same class
+        deleteButton.className = 'deleteButton';
+        return deleteButton;
+    },
+    
+    setUpEventListeners: function(){
+        var todosUl = document.querySelector('ul');
         
-        
-        // the textContent gives us acces to the text an html holds
-        todosLi.textContent = todoTextWithCompletion;
-        //appendChild is how we can add elements into other elements using javascript
-        todosUl.appendChild(todosLi);
-        }
+        todosUl.addEventListener('click', function(){
+                var elementClicked = event.target;    
+                
+                if(elementClicked.className == 'deleteButton'){
+                    handlers.deleteTodo(parseInt(elementClicked.parentNode.id));                    
+                }
+            
+            }
+        );
     }
+    
+    
 }
+
+view.setUpEventListeners();
